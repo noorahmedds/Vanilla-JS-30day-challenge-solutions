@@ -1,6 +1,11 @@
-
+var isKeyAlreadyPressed = false;
 
 function playSound(e){
+	if (isKeyAlreadyPressed){
+		return;
+	}
+	
+	isKeyAlreadyPressed = true;
 	const audio = document.querySelector(`audio[data-key = "${e.keyCode}"]`);
 	var ourDivElement = document.querySelector(`.key[data-key = "${e.keyCode}"]`);
 	
@@ -16,6 +21,7 @@ function playSound(e){
 
 // This works for me but might not be the best implementation
 window.addEventListener('keyup', function(e){
+	isKeyAlreadyPressed = false;
 	var ourDivElement = document.querySelector(`.key[data-key = "${e.keyCode}"]`);
 	if(!ourDivElement)
 	{
