@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="container">
+      <div class="clock">
+        <div class="clock-face">
+          <div class="hand hour-hand"></div>
+          <div class="hand min-hand"></div>
+          <div class="hand second-hand"></div>
+        </div>
+      </div>
+
+      <div class="digital-clock">
+        <h1 id="digital-time">00:00:00</h1>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background:#018DED url(https://images.unsplash.com/photo-1493159815322-8ab88f5234aa?auto=format&fit=crop&w=1500&q=80);
+      background-size: cover;
+      background-position: center;
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .container{
+      padding: 20px;
+      border: 2px solid;
+      margin: 0px auto;
+    }
+
+    .digital-clock{
+      background-color: #222;
+      display: block;
+      border: 1px solid white;
+      border-radius: 10px;
+    }
+
+    #digital-time{
+      color: #eee;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border:20px solid white;
+      border-radius:50%;
+      margin:50px auto;
+      position: relative;
+      padding:2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width:50%;
+      
+      height:6px;
+      background-color: black;
+      position: absolute;
+      top:50%;
+
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.03, 3, 0.86, 1.33);
+
+    }
+    
+  </style>
+    
+  <script>
+    const now = new Date();
+    
+    var secondsDegrees = now.getSeconds() * 6 + 90;
+    var minDegrees = now.getMinutes() * 6 + 90;
+    var hourDegrees = now.getHours() * 15 + 90;
+    var digTime = document.querySelector("#digital-time");
+
+    var seconds = now.getSeconds();
+    var minutes = now.getMinutes();
+    var hours = now.getHours();
+
+    var secondsHand = document.querySelector(".second-hand");
+    var minuteHand = document.querySelector(".min-hand");
+    var hourHand = document.querySelector(".hour-hand");
+
+    
+    function initClock(){
+      secondsHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      minuteHand.style.transform = `rotate(${minDegrees}deg)`;
+      hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+
+      /////////Styling
+      secondsHand.style.boxShadow = "0px 0px 10px white";
+      minuteHand.style.boxShadow = "0px 0px 10px white";
+      hourHand.style.boxShadow = "0px 0px 10px white";
+
+      secondsHand.style.backgroundColor = 'red';
+      minuteHand.style.backgroundColor = 'grey';
+    }
+
+    function setDate(){
+      secondsDegrees += 6;
+
+      
+      
+      digTime.innerText = "" + hours + ":" + minutes + ":" + seconds++;
+
+      //es6 way of doing things mate
+      secondsHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      if(secondsDegrees % 360 == 0){
+        minDegrees+= 6;
+        minutes++;
+        if (minDegrees %360 == 0){
+          hourDegrees+=15;
+          hours++;
+        }
+      }
+
+      
+      
+    }
+
+    initClock();
+    setInterval(setDate, 1000);
+  </script>
+</body>
+</html>
